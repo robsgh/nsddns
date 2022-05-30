@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 )
 
 /* GLOBAL VARS */
@@ -184,8 +185,13 @@ func getCurrentIP() (currentIP string) {
 
 // Load a configuration file from conf.json in the same directory
 func loadConfig() NSDDNSConfig {
-	// load the conf.json file
-	configFile, err := os.Open("conf.json")
+	// load the conf.json file that should be in the same dir as the executable
+	execPath, err := os.Executable()
+	if err != nil {
+		log.Fatalln("could not determine current working dir:", err.Error())
+	}
+	cwd := filepath.Dir(execPath)
+	configFile, err := os.Open(cwd + "/conf.json")
 	if err != nil {
 		log.Fatalln("could not open conf.json:", err.Error())
 	}

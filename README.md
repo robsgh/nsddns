@@ -11,6 +11,16 @@ Configuration is done through the `conf.json` file. As the name implies, it is a
 
 The `conf.json` file must live in the same directory as the binary.
 
+### Example `conf.json`
+
+```json
+{
+    "domain": "example.com",
+    "host": "test",
+    "apikey": "1234abcd"
+}
+```
+
 ## Usage
 
 Running `./nsddns` will grab the user settings supplied in `conf.json` and start the automation. There are no flags currently; all user configuration
