@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"errors"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -185,13 +186,21 @@ func getCurrentIP() (currentIP string) {
 
 // Load a configuration file from conf.json in the same directory
 func loadConfig() NSDDNSConfig {
+	var configPath string
+
 	// load the conf.json file that should be in the same dir as the executable
 	execPath, err := os.Executable()
 	if err != nil {
 		log.Fatalln("could not determine current working dir:", err.Error())
 	}
-	cwd := filepath.Dir(execPath)
-	configFile, err := os.Open(cwd + "/conf.json")
+	exeDir := filepath.Dir(execPath)
+
+	// attempt to parse the --config flag
+	flag.StringVar(&configPath, "config", exeDir+"/conf.json", "Set the config file path")
+	flag.Parse()
+
+	// use to configPath var to open the file conf
+	configFile, err := os.Open(configPath)
 	if err != nil {
 		log.Fatalln("could not open conf.json:", err.Error())
 	}
@@ -209,17 +218,24 @@ func loadConfig() NSDDNSConfig {
 }
 
 func main() {
+	var fullHostname string
+
 	// load the user config
 	config := loadConfig()
 
 	// set the variables from the config
 	domain := config.Domain
 	host := config.Host
+	if host == "" {
+		fullHostname = config.Domain
+	} else {
+		fullHostname = config.Host + "." + config.Domain
+	}
 	NS_API_KEY = config.ApiKey
 
 	// get current IP and the DNS A record IP
 	ip := getCurrentIP()
-	dnsIp, err := getDNSFromNamesilo(domain, host+"."+domain)
+	dnsIp, err := getDNSFromNamesilo(domain, fullHostname)
 	if err != nil {
 		log.Fatalln("error while getting DNS from Namesilo:", err)
 	}

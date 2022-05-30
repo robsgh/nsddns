@@ -9,7 +9,8 @@ Configuration is done through the `conf.json` file. As the name implies, it is a
 * `host`: hostname of the DNS A record (can be empty, in which case the A record would be the domain)
 * `apikey`: Namesilo API key which can be generated through the Namesilo API manager portal
 
-The `conf.json` file must live in the same directory as the binary.
+The `conf.json` file must live in the same directory as the binary. Alternatively, the `--config` flag can be used to
+direct `nsddns` to an alternative JSON configuration file.
 
 ### Example `conf.json`
 
@@ -21,10 +22,13 @@ The `conf.json` file must live in the same directory as the binary.
 }
 ```
 
+### Example of using `conf.otherdomain.json` and `--config`
+
+`$ ./nsddns --config /path/to/other/dir/conf.otherdomain.json`
+
 ## Usage
 
-Running `./nsddns` will grab the user settings supplied in `conf.json` and start the automation. There are no flags currently; all user configuration
-is done through conf.json.
+Running `./nsddns` will grab the user settings supplied in `conf.json` and start the automation.
 
 ## Building nsddns
 
