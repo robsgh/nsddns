@@ -32,11 +32,11 @@ Running `./nsddns` will grab the user settings supplied in `conf.json` and start
 
 ## Building nsddns
 
-Build the go project by running `go build` in the project directory. This will create an executable called `nsddns`. Additionally,
-`go install` can be used to place the binary at the `$GOPATH/bin` location. If `$GOPATH/bin` is added to your `PATH` environment variable
-then `nsddns` will be able to be used anywhere in the shell.
+`nsddns` uses Cargo, so you can build the project with `cargo build`. The output binary will be in `bin/`.
 
 ## Recommended Usage
 
-Copy the `nsddns` executable to a directory which only `root` can access. Copy `conf.json` to this directory with file perms `0600` and owner `root:root`.
-Then, add a cronjob every couple of minutes which executes `nsddns`.
+1. Copy the `nsddns` executable to `/usr/bin/nsddns`
+2. Copy `conf.json` to `/etc/nsddns/conf.json`
+3. Copy the files under `systemd/` to `/etc/systemd/system/` to setup the service and timer
+4. Run `systemctl enable --now nsddns.timer` to enable and start the timer
