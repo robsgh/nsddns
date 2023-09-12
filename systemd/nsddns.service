@@ -1,0 +1,11 @@
+[Unit]
+Description=Update a namesilo DNS A record to this machine's IP address
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/nsddns
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
